@@ -1,24 +1,19 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.21 <0.6.0;
 
-import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol';
-import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Mintable.sol';
-
-contract AiCoin is ERC721Full, ERC721Mintable {
+contract Migrations {
   address public owner;
   uint public last_completed_migration;
-  string public name = "AiCoin";
-  string public symbol = "ACC";
-  uint public decimals = 2;
-  uint public INITIAL_SUPPLY = 10000 * (10 ** decimals);
 
-  constructor() ERC721Full("AiCoin", "MNFT") public {
+  constructor() public {
     owner = msg.sender;
+  }
+
+  modifier restricted() {
+    if (msg.sender == owner) _;
   }
 
   function setCompleted(uint completed) public restricted {
     last_completed_migration = completed;
-    totalSupply = INITIAL_SUPPLY;
-    balances[msg.sender] = INITIAL_SUPPLY;
   }
 
   function upgrade(address new_address) public restricted {
